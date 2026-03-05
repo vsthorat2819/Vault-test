@@ -1,0 +1,31 @@
+name: Vault Secret Test
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  read-secrets:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Import Secrets from Vault
+        uses: hashicorp/vault-action@v3
+        with:
+          url: https://areal-hugh-nonjournalistically.ngrok-free.dev
+          method: jwt
+          role: github-actions-role
+          secrets: |
+            secret/data/myapp/config db_password | DB_PASSWORD ;
+            secret/data/myapp/config api_key     | API_KEY
+
+      - name: Confirm secrets were fetched
+        run: |
+          echo "DB_PASSWORD is set: ${{ env.DB_PASSWORD != '' }}"
+          echo "API_KEY is set: ${{ env.API_KEY != '' }}"
