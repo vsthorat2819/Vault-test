@@ -21,6 +21,7 @@ jobs:
           url: https://areal-hugh-nonjournalistically.ngrok-free.dev
           method: jwt
           role: github-actions-role
+          jwtGithubAudience: https://areal-hugh-nonjournalistically.ngrok-free.dev
           secrets: |
             secret/data/myapp/config db_password | DB_PASSWORD ;
             secret/data/myapp/config api_key     | API_KEY
